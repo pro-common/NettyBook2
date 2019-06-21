@@ -21,9 +21,13 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author Administrator
- * @version 1.0
- * @date 2014年2月15日
+ * ClassName: TimeServerHandlerExecutePool <br/>
+ * Function: 【2.2】 伪异步 I/O 的 TimeServerHandlerExecutedPoll. <br/>
+ * date: 2019年6月20日 下午5:30:05 <br/>
+ *
+ * @version 
+ * @since JDK 1.8
+ * @author kaiyun
  */
 public class TimeServerHandlerExecutePool {
 

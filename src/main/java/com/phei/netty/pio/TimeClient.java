@@ -1,4 +1,4 @@
-package com.phei.netty.bio;
+package com.phei.netty.pio;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.net.Socket;
 
 /**
  * ClassName: TimeClient <br/>
- * Function: 【2.1】 同步阻塞 I/O 的 TimeClient. <br/>
+ * Function: 【2.2】 伪异步 I/O 的 TimeClient. <br/>
  * date: 2019年6月20日 下午4:49:57 <br/>
  *
  * @version 
@@ -22,7 +22,7 @@ public class TimeClient {
 	 */
 	public static void main(String[] args) {
 
-		int port = 8080;
+		int port = 8090;
 		if (args != null && args.length > 0) {
 
 			try {

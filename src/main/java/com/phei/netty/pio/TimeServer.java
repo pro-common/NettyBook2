@@ -22,9 +22,13 @@ import java.net.Socket;
 import com.phei.netty.bio.TimeServerHandler;
 
 /**
- * @author lilinfeng
- * @version 1.0
- * @date 2014年2月14日
+ * ClassName: TimeServer <br/>
+ * Function: 【2.2】 未异步 I/O 的 TimeServer. <br/>
+ * date: 2019年6月20日 下午5:29:00 <br/>
+ *
+ * @version 
+ * @since JDK 1.8
+ * @author kaiyun
  */
 public class TimeServer {
 
