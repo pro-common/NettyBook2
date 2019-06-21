@@ -1,18 +1,3 @@
-/*
- * Copyright 2013-2018 Lilinfeng.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.phei.netty.nio;
 
 import java.io.IOException;
@@ -22,13 +7,16 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
-import java.util.Scanner;
 import java.util.Set;
 
 /**
- * @author Administrator
- * @version 1.0
- * @date 2014年2月16日
+ * ClassName: TimeClientHandle <br/>
+ * Function: NIO 客户端处理异步连接和读写操作线程类. <br/>
+ * date: 2019年6月21日 下午3:39:21 <br/>
+ *
+ * @version 
+ * @since JDK 1.8
+ * @author kaiyun
  */
 public class TimeClientHandle implements Runnable {
 
@@ -44,8 +32,11 @@ public class TimeClientHandle implements Runnable {
         this.host = host == null ? "127.0.0.1" : host;
         this.port = port;
         try {
+        	// 
             selector = Selector.open();
+            // 打开 SocketChannel，绑定客户端的地址（可选，默认系统会随机分配一个可用的本地地址）
             socketChannel = SocketChannel.open();
+            // 设置 SocketChannel 为阻塞模式
             socketChannel.configureBlocking(false);
         } catch (IOException e) {
             e.printStackTrace();
@@ -138,8 +129,10 @@ public class TimeClientHandle implements Runnable {
     }
 
     private void doConnect() throws IOException {
-        // 如果直接连接成功，则注册到多路复用器上，发送请求消息，读应答
-        if (socketChannel.connect(new InetSocketAddress(host, port))) {
+    	// 异步连接服务端
+    	boolean connected = socketChannel.connect(new InetSocketAddress(host, port));
+        // 判断是否连接成功。如果直接连接成功，则注册读状态位到多路复用器上，如果当前没有连接成功（异步连接，返回false，说明客户端已经发送sync包，服务端没有返回ack包，物理链路还没有建立）
+        if (connected) {
             socketChannel.register(selector, SelectionKey.OP_READ);
             doWrite(socketChannel);
         } else

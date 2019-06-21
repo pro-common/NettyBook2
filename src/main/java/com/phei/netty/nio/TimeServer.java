@@ -16,14 +16,28 @@
 package com.phei.netty.nio;
 
 /**
- * @author lilinfeng
- * @version 1.0
- * @date 2014年2月14日
+ * ClassName: TimeServer <br/>
+ * Function: 【2.3】 NIO 创建服务端 TimeServer. <br/>
+ * date: 2019年6月21日 上午11:27:20 <br/>
+ *
+ * @version 
+ * @since JDK 1.8
+ * @author kaiyun
  */
 public class TimeServer {
 
     public static void main(String[] args) {
+    	// 设置监听器端口
         int port = 8080;
+        if (args != null && args.length > 0) {
+			try {
+				port = Integer.valueOf(args[0]);
+			} catch (NumberFormatException e) {
+				// 采用默认值
+			}
+		}
+        
+        // 创建多路复用类（是一个独立的线程，负责轮询多路复用器 Selector，可以处理多个客户端的并发接入）
         MultiplexerTimeServer timeServer = new MultiplexerTimeServer(port);
         new Thread(timeServer, "NIO-MultiplexerTimeServer-001").start();
     }

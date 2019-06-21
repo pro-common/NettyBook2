@@ -1,18 +1,3 @@
-/*
- * Copyright 2013-2018 Lilinfeng.
- *  
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *  
- *      http://www.apache.org/licenses/LICENSE-2.0
- *  
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.phei.netty.aio;
 
 import java.io.IOException;
@@ -21,49 +6,49 @@ import java.nio.channels.AsynchronousServerSocketChannel;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * @author Administrator
- * @date 2014年2月16日
- * @version 1.0
+ * ClassName: AsyncTimeServerHandler <br/>
+ * Function: 【2.4】AIO 异步服务器处理类. <br/>
+ * date: 2019年6月21日 下午4:08:55 <br/>
+ *
+ * @version
+ * @since JDK 1.8
+ * @author kaiyun
  */
 public class AsyncTimeServerHandler implements Runnable {
 
-    private int port;
+	private int port;
 
-    CountDownLatch latch;
-    AsynchronousServerSocketChannel asynchronousServerSocketChannel;
+	CountDownLatch latch;
+	AsynchronousServerSocketChannel asynchronousServerSocketChannel;
 
-    public AsyncTimeServerHandler(int port) {
-	this.port = port;
-	try {
-	    asynchronousServerSocketChannel = AsynchronousServerSocketChannel
-		    .open();
-	    asynchronousServerSocketChannel.bind(new InetSocketAddress(port));
-	    System.out.println("The time server is start in port : " + port);
-	} catch (IOException e) {
-	    e.printStackTrace();
+	public AsyncTimeServerHandler(int port) {
+		this.port = port;
+		try {
+			// 创建一个异步的服务端通道 AsynchronnousServerChannel
+			asynchronousServerSocketChannel = AsynchronousServerSocketChannel.open();
+			// 绑定监听端口
+			asynchronousServerSocketChannel.bind(new InetSocketAddress(port));
+			System.out.println("The time server is start in port : " + port);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
-    }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Runnable#run()
-     */
-    @Override
-    public void run() {
+	@Override
+	public void run() {
 
-	latch = new CountDownLatch(1);
-	doAccept();
-	try {
-	    latch.await();
-	} catch (InterruptedException e) {
-	    e.printStackTrace();
+		// CountDownLatch 对象作用：在完成一组正在执行的操作之前，允许当前的线程一直阻塞。
+		latch = new CountDownLatch(1);
+		doAccept();
+		try {
+			latch.await();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
-    }
 
-    public void doAccept() {
-	asynchronousServerSocketChannel.accept(this,
-		new AcceptCompletionHandler());
-    }
+	public void doAccept() {
+		asynchronousServerSocketChannel.accept(this, new AcceptCompletionHandler());
+	}
 
 }
