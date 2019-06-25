@@ -23,7 +23,7 @@ import com.phei.netty.bio.TimeServerHandler;
 
 /**
  * ClassName: TimeServer <br/>
- * Function: 【2.2】 未异步 I/O 的 TimeServer. <br/>
+ * Function: 【2.2】 伪异步 I/O 的 TimeServer. <br/>
  * date: 2019年6月20日 下午5:29:00 <br/>
  *
  * @version 

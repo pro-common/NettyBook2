@@ -1,18 +1,3 @@
-/*
- * Copyright 2012 The Netty Project
- *
- * The Netty Project licenses this file to you under the Apache License,
- * version 2.0 (the "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at:
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations
- * under the License.
- */
 package com.phei.netty.frame.fixedLen;
 
 import io.netty.channel.ChannelHandler.Sharable;
@@ -20,9 +5,13 @@ import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
- * @author lilinfeng
- * @version 1.0
- * @date 2014年2月14日
+ * ClassName: EchoServerHandler <br/>
+ * Function: 【5.2】Netty 服务端 Handler. <br/>
+ * date: 2019年6月25日 下午4:16:05 <br/>
+ *
+ * @version 
+ * @since JDK 1.8
+ * @author kaiyun
  */
 @Sharable
 public class EchoServerHandler extends ChannelHandlerAdapter {

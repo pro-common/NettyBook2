@@ -1,6 +1,8 @@
-package com.phei.netty.basic;
+package com.phei.netty.codec.msgpack;
 
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -10,31 +12,32 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 /**
- * ClassName: TimeClient <br/>
- * Function: 【3.2】Netty 客户端. <br/>
- * date: 2019年6月24日 下午4:45:23 <br/>
+ * ClassName: EchoClient <br/>
+ * Function: 【7.2】Netty 客户端. <br/>
+ * date: 2019年6月25日 下午2:56:10 <br/>
  *
  * @version 
  * @since JDK 1.8
  * @author kaiyun
  */
-public class TimeClient {
+public class EchoClient {
 
     public void connect(int port, String host) throws Exception {
-        // 配置客户端NIO线程组（处理 I/O 读写的 NioEventLoopGroup 线程组）
+        // 配置客户端NIO线程组
         EventLoopGroup group = new NioEventLoopGroup();
         try {
-        	// 创建客户端辅助启动类并对其进行配置
             Bootstrap b = new Bootstrap();
             b.group(group).channel(NioSocketChannel.class)
                     .option(ChannelOption.TCP_NODELAY, true)
+                    .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3000)
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
-                        public void initChannel(SocketChannel ch)
-                                throws Exception {
-                        	// 在进行初始化时，将NioSocketChannel的ChannelHandlerContext 设置到 ChannelPipeline 中，用于处理网络I/O事件。
-                            ch.pipeline().addLast(new TimeClientHandler());
-                            System.out.println("添加一个管道");
+                        public void initChannel(SocketChannel ch) {
+                            // 与服务器端一样, 添加两个解码器
+                            ByteBuf delimiter = Unpooled.copiedBuffer("$_".getBytes());
+                            ch.pipeline().addLast("msgpack decodere", new MsgpackDecoder());
+                            ch.pipeline().addLast("msgpack encoder", new MsgpackEncoder());
+                            ch.pipeline().addLast(new EchoClientHandler());
                         }
                     });
 
@@ -54,15 +57,6 @@ public class TimeClient {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-        int port = 8080;
-        if (args != null && args.length > 0) {
-            try {
-                port = Integer.valueOf(args[0]);
-            } catch (NumberFormatException e) {
-                // 采用默认值
-            }
-        }
-        new TimeClient().connect(port, "127.0.0.1");
-        System.out.println("断开");
+        new EchoClient().connect(8081, "127.0.0.1");
     }
 }

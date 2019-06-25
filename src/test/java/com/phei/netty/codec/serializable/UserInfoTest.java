@@ -8,10 +8,13 @@ import java.io.ObjectOutputStream;
 import java.nio.ByteBuffer;
 
 /**
- * Created by https://github.com/kuangcp
+ * ClassName: UserInfoTest <br/>
+ * Function: 【6.1.2】使用基于 ByteBuffer 的通用二进制编解码技术与传统JDK序列化后的码流大小进行对比. <br/>
+ * date: 2019年6月25日 下午8:13:05 <br/>
  *
- * @author kuangcp
- * @date 18-3-20  下午4:43
+ * @version 
+ * @since JDK 1.8
+ * @author kaiyun
  */
 public class UserInfoTest {
     @Test

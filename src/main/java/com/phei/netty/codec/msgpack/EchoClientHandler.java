@@ -1,4 +1,4 @@
-package com.phei.netty.frame.delimiter;
+package com.phei.netty.codec.msgpack;
 
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerAdapter;
@@ -6,7 +6,7 @@ import io.netty.channel.ChannelHandlerContext;
 
 /**
  * ClassName: EchoClientHandler <br/>
- * Function: 【5.1】Netty 客户端（自定义分隔符）handler 处理类. <br/>
+ * Function: 【7.2】Netty 客户端handler 处理类. <br/>
  * date: 2019年6月25日 下午2:56:32 <br/>
  *
  * @version 
