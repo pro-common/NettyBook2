@@ -21,8 +21,14 @@ import io.netty.channel.socket.nio.NioSocketChannel;
  * @author kaiyun
  */
 public class EchoClient {
+	
+	private final int sendNumber;
+	
+    public EchoClient(int sendNumber) {
+		this.sendNumber = sendNumber;
+	}
 
-    public void connect(int port, String host) throws Exception {
+	public void connect(int port, String host) throws Exception {
         // 配置客户端NIO线程组
         EventLoopGroup group = new NioEventLoopGroup();
         try {
@@ -33,11 +39,9 @@ public class EchoClient {
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         public void initChannel(SocketChannel ch) {
-                            // 与服务器端一样, 添加两个解码器
-                            ByteBuf delimiter = Unpooled.copiedBuffer("$_".getBytes());
                             ch.pipeline().addLast("msgpack decodere", new MsgpackDecoder());
                             ch.pipeline().addLast("msgpack encoder", new MsgpackEncoder());
-                            ch.pipeline().addLast(new EchoClientHandler());
+                            ch.pipeline().addLast(new EchoClientHandler(sendNumber));
                         }
                     });
 
@@ -57,6 +61,6 @@ public class EchoClient {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-        new EchoClient().connect(8081, "127.0.0.1");
+        new EchoClient(5).connect(8081, "127.0.0.1");
     }
 }

@@ -1,18 +1,3 @@
-/*
- * Copyright 2013-2018 Lilinfeng.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.phei.netty.protocol.http.fileServer;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -28,13 +13,17 @@ import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.stream.ChunkedWriteHandler;
 
 /**
- * @author lilinfeng
- * @version 1.0
- * @date 2014年2月14日
+ * ClassName: HttpFileServer <br/>
+ * Function: 【10.2】HTTP文件服务器 启动类 . <br/>
+ * date: 2019年6月27日 下午2:34:39 <br/>
+ *
+ * @version 
+ * @since JDK 1.8
+ * @author kaiyun
  */
 public class HttpFileServer {
 
-    private static final String DEFAULT_URL = "/nettybook2/src/main/java/com/phei/netty/";
+    private static final String DEFAULT_URL = "/src/main/java/com/phei/netty/";
 
     public void run(final int port, final String url) throws Exception {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
@@ -51,11 +40,11 @@ public class HttpFileServer {
                             ch.pipeline().addLast("http-decoder",
                                     new HttpRequestDecoder()); // 请求消息解码器
                             ch.pipeline().addLast("http-aggregator",
-                                    new HttpObjectAggregator(65536));// 目的是将多个消息转换为单一的request或者response对象
+                                    new HttpObjectAggregator(65536));// 目的是将多个消息转换为单一的request或者response对象，原因是 HTTP 解码器在每个HTTP消息中会生成多个消息对象
                             ch.pipeline().addLast("http-encoder",
                                     new HttpResponseEncoder());//响应解码器
                             ch.pipeline().addLast("http-chunked",
-                                    new ChunkedWriteHandler());//目的是支持异步大文件传输（）
+                                    new ChunkedWriteHandler());//目的是支持异步大文件传输，但不占用过多的内存，防止发生Java内存溢出错误
                             // 自己手动编写的处理器
                             ch.pipeline().addLast("fileServerHandler",
                                     new HttpFileServerHandler(url));

@@ -1,6 +1,7 @@
 package com.phei.netty.codec.msgpack;
 
-import io.netty.buffer.Unpooled;
+import com.phei.netty.codec.serializable.UserInfo;
+
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -15,25 +16,28 @@ import io.netty.channel.ChannelHandlerContext;
  */
 public class EchoClientHandler extends ChannelHandlerAdapter {
 
-    private int counter;
+    private final int sendNumber;
 
-    private static final String ECHO_REQ = "Hi, Lilinfeng. Welcome to Netty.$_";
-
-    /**
-     * Creates a client-side handler.
-     */
-    public EchoClientHandler() {
+    public EchoClientHandler(int sendNumber) {
+    	this.sendNumber = sendNumber;
     }
-
+    
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-        // ByteBuf buf = UnpooledByteBufAllocator.DEFAULT.buffer(ECHO_REQ
-        // .getBytes().length);
-        // buf.writeBytes(ECHO_REQ.getBytes());
-        // 循环发送消息
-        for (int i = 0; i < 10; i++) {
-            ctx.writeAndFlush(Unpooled.copiedBuffer(ECHO_REQ.getBytes()));
-        }
+    	UserInfo[] infos = UserInfo();
+    	for(UserInfo infoE : infos) {
+    		ctx.write(infoE);
+    	}
+    }
+    private UserInfo[] UserInfo() {
+    	UserInfo[] userInfos = new UserInfo[sendNumber];
+    	UserInfo userInfo = null;
+    	for(int i=0; i<sendNumber; i++) {
+    		userInfo = new UserInfo();
+    		userInfo.setUserName("ABCDEFG --->" + i);
+    		userInfos[i] = userInfo;
+    	}
+    	return userInfos;
     }
 
     /**
@@ -43,7 +47,8 @@ public class EchoClientHandler extends ChannelHandlerAdapter {
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        System.out.println("This is " + ++counter + " times receive server : [" + msg + "]");
+        System.out.println("Client receive the msgpack message : " + msg);
+        ctx.write(msg);
     }
 
     @Override
